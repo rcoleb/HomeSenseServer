@@ -8,6 +8,7 @@ import com.fhs.vibesense.data.TwilioConfig;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.rest.api.v2010.account.MessageCreator;
 import com.twilio.type.PhoneNumber;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Slf4j
 public class EventService {
 
     private final EventRepository eventRepository;
@@ -36,7 +38,7 @@ public class EventService {
     }
 
     public void processEvent(Event event) {
-        // TODO log
+        log.debug("Event :: {}", event);
         eventRepository.save(event);
         sendNotifications(event);
     }
@@ -66,9 +68,9 @@ public class EventService {
     }
 
     private void sendNotification(String phoneNumber, String message) {
-        // TODO log
         MessageCreator messageCreator = Message.creator(new PhoneNumber(phoneNumber), new PhoneNumber(twilioConfig.getFromPhoneNumber()), message);
         messageCreator.create(twilioConfig.twilioRestClient());
+        log.debug("Sent Notification to {}: {}", phoneNumber, message);
     }
 
     public List<Event> getEventsForDevice(Long id) {

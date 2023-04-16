@@ -23,19 +23,5 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class TwilioServiceTests {
 
 
-    @Test
-    public void testParseMessageBody() {
-        StringJoiner sj = new StringJoiner(", ");
-        Arrays.stream(DeviceType.values()).map(DeviceType::name).forEach(sj::add);
-        MessagingResponse twiml = new MessagingResponse.Builder()
-                .message(new Message.Builder()
-                        .body(new Body.Builder()
-                                .build())
-                        .build())
-                .build();
-
-        System.out.println(twiml.toXml());
-        System.out.println(twiml.toString());
-    }
 
 }

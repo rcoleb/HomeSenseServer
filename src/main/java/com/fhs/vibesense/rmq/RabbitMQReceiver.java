@@ -22,7 +22,7 @@ public class RabbitMQReceiver {
         this.amqpTemplate = amqpTemplate;
     }
 
-    @RabbitListener(queues = "${spring.rabbitmq.queueName}")
+    @RabbitListener(containerFactory = "rabbitListenerContainerFactory", queues = "${spring.rabbitmq.queueName}")
     public void receiveMessage(Event event) {
         eventService.processEvent(event);
     }
