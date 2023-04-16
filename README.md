@@ -1,4 +1,4 @@
-To run this, you must add a "application.properties" file in `src/main/resources/`. 
+To run this, you must provide an "application.properties" file in for Spring configuration.
 
 The `application.properties` file must list the following properties:
 
