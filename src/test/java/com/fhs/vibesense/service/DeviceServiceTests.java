@@ -8,6 +8,7 @@ import com.fhs.vibesense.data.DeviceType;
 import com.fhs.vibesense.data.User;
 import com.fhs.vibesense.jpa.DeviceRepository;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -32,6 +33,7 @@ public class DeviceServiceTests {
     DeviceService deviceService;
 
     @AfterEach
+    @BeforeEach
     void empty() {
         for (Device d : deviceService.getAllDevices()) {
             deviceService.removeDevice(d);

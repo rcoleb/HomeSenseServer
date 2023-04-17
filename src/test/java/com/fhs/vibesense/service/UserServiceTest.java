@@ -3,7 +3,9 @@ package com.fhs.vibesense.service;
 import com.fhs.vibesense.data.Device;
 import com.fhs.vibesense.data.User;
 import com.fhs.vibesense.jpa.UserRepository;
+import org.junit.Before;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -24,6 +26,7 @@ public class UserServiceTest {
     private UserService userService;
 
     @AfterEach
+    @BeforeEach
     void empty() {
         for (User u : userService.getAllUsers()) {
             userService.removeUser(u);
