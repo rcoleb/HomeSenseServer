@@ -5,12 +5,14 @@ import com.fhs.vibesense.jpa.DeviceRepository;
 import com.fhs.vibesense.jpa.EventRepository;
 import com.fhs.vibesense.jpa.UserRepository;
 import com.fhs.vibesense.data.TwilioConfig;
+import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.rest.api.v2010.account.MessageCreator;
 import com.twilio.type.PhoneNumber;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,6 +37,7 @@ public class EventService {
         this.twilioConfig = twilioConfig;
         this.userRepository = userRepository;
         this.deviceRepository = deviceRepository;
+        Twilio.init(twilioConfig.getAccountSid(), twilioConfig.getAuthToken());
     }
 
     public void processEvent(Event event) {
@@ -67,17 +70,11 @@ public class EventService {
         return message;
     }
 
-    private void sendNotification(String phoneNumber, String message) {
+    public void sendNotification(String phoneNumber, String message) {
+        String phone = phoneNumber.charAt(0) == '+' ? phoneNumber : ("+" + phoneNumber);
         MessageCreator messageCreator = Message.creator(new PhoneNumber(phoneNumber), new PhoneNumber(twilioConfig.getFromPhoneNumber()), message);
         messageCreator.create(twilioConfig.twilioRestClient());
         log.debug("Sent Notification to {}: {}", phoneNumber, message);
     }
 
-    public List<Event> getEventsForDevice(Long id) {
-        return eventRepository.findAllByDeviceId(id);
-    }
-
-    public void deleteEvent(Event event) {
-        eventRepository.deleteById(event.getId());
-    }
 }

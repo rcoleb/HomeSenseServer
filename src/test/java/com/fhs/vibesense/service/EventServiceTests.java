@@ -1,27 +1,55 @@
 package com.fhs.vibesense.service;
 
+import ch.qos.logback.core.testUtil.MockInitialContext;
 import com.fhs.vibesense.data.*;
-import com.fhs.vibesense.jpa.DeviceRepository;
-import com.fhs.vibesense.jpa.EventRepository;
-import com.fhs.vibesense.jpa.UserRepository;
-import com.twilio.http.TwilioRestClient;
-import com.twilio.rest.api.v2010.account.Message;
-import com.twilio.rest.api.v2010.account.MessageCreator;
-import com.twilio.type.PhoneNumber;
-import org.junit.Before;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.mockito.*;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
 
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-
+@SpringJUnitConfig
+@SpringBootTest
+@AutoConfigureTestDatabase
 public class EventServiceTests {
+
+    @Autowired
+    DeviceService deviceService;
+
+    @Autowired
+    SubscriptionService subscriptionService;
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    EventService eventService;
+
+    @Test
+    public void testProcessEvent() {
+        EventService eventService1 = Mockito.spy(eventService);
+        String phoneNumber = "15005550006";
+        userService.addUser(new User(phoneNumber));
+        Device dWasher = new Device(null, DeviceType.WASHER);
+        deviceService.addDevice(dWasher);
+        Device dDryer = new Device(null, DeviceType.DRYER);
+        deviceService.addDevice(dDryer);
+        Subscription subscription = new Subscription(phoneNumber, EventType.STOPPED, dWasher.getId());
+        subscriptionService.addSubscription(subscription);
+        Event event = new Event(null, dWasher.getId(), LocalDateTime.now(), EventType.STOPPED);
+
+        Mockito.doAnswer(invocation -> {
+            System.out.println((String) invocation.getArgument(1));
+            return null;
+        }).when(eventService1).sendNotification(Mockito.anyString(), Mockito.anyString());
+        eventService1.processEvent(event);
+
+        assertNotNull(event.getId());
+    }
 
 }
