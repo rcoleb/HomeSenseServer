@@ -95,6 +95,8 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${parent.version}</version>
                 <configuration>
+                    <classifier>spring-boot</classifier>
+                    <mainClass>com.fhs.vibesense.VibeSenseApplication</mainClass>
                     <excludes>
                         <exclude>
                             <groupId>org.project-lombok</groupId>
@@ -102,6 +104,16 @@
                         </exclude>
                     </excludes>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>repackage</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
             </plugin>
         </plugins>
     </build>
