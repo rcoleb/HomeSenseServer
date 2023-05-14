@@ -2,6 +2,8 @@ package com.fhs.vibesense.jpa;
 
 import com.fhs.vibesense.data.Device;
 import com.fhs.vibesense.data.DeviceType;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -19,22 +21,31 @@ public class DeviceRepositoryTests {
     @Autowired
     private DeviceRepository deviceRepository;
 
+    @AfterEach
+    @BeforeEach
+    void empty() {
+        deviceRepository.deleteAll();
+    }
+
     @Test
     public void testSaveDevice() {
         // Given
-        Device device = new Device(null, DeviceType.WASHER);
+        Device device = new Device(1L, DeviceType.WASHER);
 
-        // When
+        assertTrue(deviceRepository.findById(device.getId()).isEmpty());
+
         deviceRepository.save(device);
 
-        // Then
-        assertNotNull(device.getId());
+        assertTrue(deviceRepository.findById(device.getId()).isPresent());
+
     }
 
     @Test
     public void testFindDeviceById() {
         // Given
-        Device device = new Device(null, DeviceType.WASHER);
+        Device device = new Device(1L, DeviceType.WASHER);
+
+        assertTrue(deviceRepository.findById(device.getId()).isEmpty());
         deviceRepository.save(device);
 
         // When
@@ -49,8 +60,10 @@ public class DeviceRepositoryTests {
     @Test
     public void testDeleteDevice() {
         // Given
-        Device device = new Device(null, DeviceType.WASHER);
+        Device device = new Device(1L, DeviceType.WASHER);
+        assertTrue(deviceRepository.findById(device.getId()).isEmpty());
         deviceRepository.save(device);
+        assertTrue(deviceRepository.findById(device.getId()).isPresent());
 
         // When
         deviceRepository.delete(device);
@@ -62,8 +75,10 @@ public class DeviceRepositoryTests {
     @Test
     public void testFindAllDevices() {
         // Given
-        Device device1 = new Device(null, DeviceType.WASHER);
-        Device device2 = new Device(null, DeviceType.DRYER);
+        Device device1 = new Device(1L, DeviceType.WASHER);
+        Device device2 = new Device(2L, DeviceType.DRYER);
+        assertTrue(deviceRepository.findById(device1.getId()).isEmpty());
+        assertTrue(deviceRepository.findById(device2.getId()).isEmpty());
         deviceRepository.saveAll(Arrays.asList(device1, device2));
 
         // When

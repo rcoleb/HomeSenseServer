@@ -35,9 +35,9 @@ public class EventServiceTests {
         EventService eventService1 = Mockito.spy(eventService);
         String phoneNumber = "15005550006";
         userService.addUser(new User(phoneNumber));
-        Device dWasher = new Device(null, DeviceType.WASHER);
+        Device dWasher = new Device(1L, DeviceType.WASHER);
         deviceService.addDevice(dWasher);
-        Device dDryer = new Device(null, DeviceType.DRYER);
+        Device dDryer = new Device(3L, DeviceType.DRYER);
         deviceService.addDevice(dDryer);
         Subscription subscription = new Subscription(phoneNumber, EventType.STOPPED, dWasher.getId());
         subscriptionService.addSubscription(subscription);

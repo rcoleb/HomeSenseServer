@@ -9,7 +9,7 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "subscriptions")
+@Table(name = "subscription")
 public class Subscription {
 
     public Subscription(String userPhone, EventType eventType, Long deviceId) {

@@ -42,7 +42,7 @@ public class DeviceServiceTests {
 
     @Test
     void testAddDevice() {
-        Device testDevice = new Device(null, DeviceType.DRYER);
+        Device testDevice = new Device(1L, DeviceType.DRYER);
         deviceService.addDevice(testDevice);
 
         assertNotNull(testDevice.getId());
@@ -53,10 +53,11 @@ public class DeviceServiceTests {
 
     @Test
     void testRemoveDevice() {
-        Device testDevice = new Device(null, DeviceType.WASHER);
+        Device testDevice = new Device(1L, DeviceType.WASHER);
         deviceService.addDevice(testDevice);
+        Optional<Device> actual = deviceService.getDeviceById(testDevice.getId());
+        assertTrue(actual.isPresent());
 
-        assertNotNull(testDevice.getId());
         deviceService.removeDevice(testDevice);
 
         assertTrue(deviceService.getDeviceById(testDevice.getId()).isEmpty());
@@ -64,8 +65,8 @@ public class DeviceServiceTests {
 
     @Test
     void testGetAllDevices() {
-        Device testDevice1 = new Device(null, DeviceType.WASHER);
-        Device testDevice2 = new Device(null, DeviceType.DRYER);
+        Device testDevice1 = new Device(1L, DeviceType.WASHER);
+        Device testDevice2 = new Device(2L, DeviceType.DRYER);
         List<Device> userList = new ArrayList<>();
         userList.add(testDevice1);
         userList.add(testDevice2);
@@ -84,9 +85,9 @@ public class DeviceServiceTests {
 
     @Test
     void testGetDevicesByDeviceType() {
-        Device testDevice1 = new Device(null, DeviceType.WASHER);
-        Device testDevice2 = new Device(null, DeviceType.WASHER);
-        Device testDevice3 = new Device(null, DeviceType.DRYER);
+        Device testDevice1 = new Device(1L, DeviceType.WASHER);
+        Device testDevice2 = new Device(2L, DeviceType.WASHER);
+        Device testDevice3 = new Device(3L, DeviceType.DRYER);
         deviceService.addDevice(testDevice1);
         deviceService.addDevice(testDevice2);
         deviceService.addDevice(testDevice3);

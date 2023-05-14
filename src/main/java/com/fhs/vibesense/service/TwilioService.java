@@ -1,9 +1,6 @@
 package com.fhs.vibesense.service;
 
-import com.fhs.vibesense.data.Device;
-import com.fhs.vibesense.data.DeviceType;
-import com.fhs.vibesense.data.EventType;
-import com.fhs.vibesense.data.Subscription;
+import com.fhs.vibesense.data.*;
 import com.twilio.twiml.MessagingResponse;
 import com.twilio.twiml.messaging.Body;
 import com.twilio.twiml.messaging.Message;
@@ -23,10 +20,13 @@ public class TwilioService {
 
     private final DeviceService deviceService;
 
+    private final UserService userService;
+
     @Autowired
-    public TwilioService(SubscriptionService subscriptionService, DeviceService deviceService) {
+    public TwilioService(SubscriptionService subscriptionService, DeviceService deviceService, UserService userService) {
         this.subscriptionService = subscriptionService;
         this.deviceService = deviceService;
+        this.userService = userService;
     }
 
     @PostMapping("/sms")
@@ -35,6 +35,9 @@ public class TwilioService {
         String messageBody = extractMessageBody(requestBody).strip();
 
         String userPhone = extractSenderPhoneNumber(requestBody).strip();
+        // TODO validate userPhone is a correctly-formatted phone number
+
+        userService.addUser(new User(userPhone));
 
         String[] pts = messageBody.split("\\+");
 
