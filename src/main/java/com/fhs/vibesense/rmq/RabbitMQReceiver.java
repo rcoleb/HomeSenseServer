@@ -5,6 +5,7 @@ import com.fhs.vibesense.data.Event;
 import com.fhs.vibesense.service.EventService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -26,10 +27,11 @@ public class RabbitMQReceiver {
     }
 
     @RabbitListener(containerFactory = "rabbitListenerContainerFactory", queues = "${spring.rabbitmq.queueName}")
-    public void receiveMessage(Object msg) {
+    public void receiveMessage(Message msg) {
         log.info(msg.toString());
+        log.info(new String(msg.getBody()));
         try {
-            Event event = new ObjectMapper().convertValue(msg, Event.class);
+            Event event = new ObjectMapper().readValue(msg.getBody(), Event.class);
             eventService.processEvent(event);
         } catch (Exception e) {
             log.error("Invalid Event", e);
