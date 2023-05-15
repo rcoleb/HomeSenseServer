@@ -1,5 +1,6 @@
 package com.fhs.vibesense.rmq;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fhs.vibesense.data.Event;
 import com.fhs.vibesense.service.EventService;
 import lombok.extern.slf4j.Slf4j;
@@ -25,9 +26,14 @@ public class RabbitMQReceiver {
     }
 
     @RabbitListener(containerFactory = "rabbitListenerContainerFactory", queues = "${spring.rabbitmq.queueName}")
-    public void receiveMessage(Event event) {
-        log.info(event);
-        eventService.processEvent(event);
+    public void receiveMessage(Object msg) {
+        log.info(msg.toString());
+        try {
+            Event event = new ObjectMapper().convertValue(msg, Event.class);
+            eventService.processEvent(event);
+        } catch (Exception e) {
+            log.error("Invalid Event", e);
+        }
     }
 
     public void sendMessage(Event event) {
