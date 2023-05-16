@@ -41,7 +41,7 @@ def connect():
     wlan = network.WLAN(network.STA_IF)
     wlan.active(True)
     wlan.connect(ssid, passw)
-    while wlan.isconnected() == False:
+    while not wlan.isconnected():
         print('Waiting for connection...')
         time.sleep(1)
     ip = wlan.ifconfig()[0]
