@@ -12,13 +12,16 @@ import com.twilio.type.PhoneNumber;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @Service
 @Slf4j
+@RestController
 public class EventService {
 
     private final EventRepository eventRepository;
@@ -44,6 +47,12 @@ public class EventService {
         log.debug("Event :: {}", event);
         eventRepository.save(event);
         sendNotifications(event);
+    }
+
+    @GetMapping("/events")
+    @ResponseBody
+    public List<Event> getRecentEvents() {
+        return eventRepository.findFirstGroupedByTimestamp();
     }
 
     private void sendNotifications(Event event) {

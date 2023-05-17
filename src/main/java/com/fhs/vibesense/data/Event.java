@@ -17,8 +17,15 @@ import java.time.LocalDateTime;
 @Table(name = "event")
 public class Event {
 
+    public Event(Long deviceId, LocalDateTime timestamp, EventType eventType) {
+        this.deviceId = deviceId;
+        this.timestamp = timestamp;
+        this.eventType = eventType;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "device_id")

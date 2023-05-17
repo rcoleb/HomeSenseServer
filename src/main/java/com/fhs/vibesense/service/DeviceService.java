@@ -3,9 +3,12 @@ package com.fhs.vibesense.service;
 import com.fhs.vibesense.data.Device;
 import com.fhs.vibesense.data.DeviceType;
 import com.fhs.vibesense.jpa.DeviceRepository;
+import com.twilio.http.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,6 +31,11 @@ public class DeviceService {
     public ResponseEntity<String> upsertDevice(@RequestBody Device deviceBody) {
         addDevice(deviceBody);
         return ResponseEntity.ok("Device added successfully");
+    }
+
+    @GetMapping("/devices")
+    public ResponseEntity<List<Device>> getDevices() {
+        return new ResponseEntity(deviceRepository.findAll(), HttpStatus.OK);
     }
 
     public Device addDevice(Device device) {
