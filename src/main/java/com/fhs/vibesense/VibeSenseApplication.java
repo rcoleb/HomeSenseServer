@@ -16,15 +16,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 public class VibeSenseApplication {
 
-    @Bean
-    public WebMvcConfigurer customConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
-                configurer.defaultContentType(MediaType.APPLICATION_JSON);
-            }
-        };
-    }
     public static void main(String[] args) {
         SpringApplication.run(VibeSenseApplication.class, args);
     }
