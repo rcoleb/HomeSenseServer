@@ -47,7 +47,7 @@ public class EventService {
         sendNotifications(event);
     }
 
-    @RequestMapping(method = RequestMethod.GET, name = "/events", produces = "application/json")
+    @GetMapping("/events")
     public List<Event> getRecentEvents() {
         return eventRepository.findFirstGroupedByTimestamp();
     }
