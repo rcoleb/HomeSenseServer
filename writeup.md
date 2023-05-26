@@ -233,3 +233,11 @@ I tried to send events over the wire as byte arrays, but this didn't work out - 
 
 Eventually I settled on using regular HTTP requests to post events to RabbitMQ. It's not optimal, but it works, which is the important part!
 
+## Phase 8:
+
+Next came a fun side-track - the Grove Pi shields for the Raspberry Pi Pico W are actually designed for the Raspberry Pi Pico (no W). It turns out, the Pico W moved three important pins to the middle of the board, which meant the Grove shield couldn't connect directly into those pins as it was supposed to.
+
+I ended up soldering three wires into those pins, and sticking the wires directly into the sockets on the Grove shield. 
+
+![20230515_151401](https://github.com/rcoleb/HomeSenseServer/assets/5131929/228ecdc9-0084-4acf-ae3f-570783c4447d)
+
