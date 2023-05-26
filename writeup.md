@@ -92,7 +92,7 @@ So here's what I decided:
 I would attach a sensor deck to each machine. Each individual sensor apparatus would detect events (machine started, door opened, etc), and send those events to an event queue running on a central system. The central system would read events and, if a user has signed up for a notification for that type of event for that machine, would send out a notification to that user's phone. 
 
 Here's the system design I came up with:
-![[system-diagram.drawio 1.png]]
+![system-diagram drawio](https://github.com/rcoleb/HomeSenseServer/assets/5131929/bd024c64-c12c-44fb-9699-c9d19bf8a5b6)
 
 - I would use a Raspberry Pi Pico W as the board for each machine. 
 	- The Pico W has a wi-fi chip, whereas the original Pico does not. For my application, I needed a network connection.
