@@ -47,6 +47,11 @@ public class EventService {
         sendNotifications(event);
     }
 
+    @PostMapping("/event")
+    public void receiveEvent(@RequestBody Event event) {
+        processEvent(event);
+    }
+
     @GetMapping("/events")
     public List<Event> getRecentEvents() {
         return eventRepository.findFirstGroupedByTimestamp();
