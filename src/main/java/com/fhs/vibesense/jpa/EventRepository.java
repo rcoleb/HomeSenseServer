@@ -12,7 +12,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     List<Event> findAllByDeviceId(Long deviceId);
 
-    @Query(value = "SELECT id, device_id, timestamp, event_type FROM event GROUP BY device_id ORDER BY timestamp DESC", nativeQuery = true)
+    @Query(value = "SELECT id, device_id, timestamp, event_type FROM (SELECT max(timestamp) AS timestamp FROM event GROUP BY device_id) as times JOIN event USING (timestamp)", nativeQuery = true)
     List<Event> findFirstGroupedByTimestamp();
 
 }
